@@ -1,40 +1,7 @@
-# dns_demo
+# DDNS+SSL+PROXY
 
-This template should help get you started developing with Vue 3 in Vite.
+用我渣代码技术，实现域名自动解析，自动申请SSL证书，以及图形化管理Nginx的反向代理配置文件，为什么不使用Nginx Proxy Manager，因为我想学习一下python以及vue。
 
-## Recommended IDE Setup
+## 目前已完成功能
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin).
-
-## Type Support for `.vue` Imports in TS
-
-TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin) to make the TypeScript language service aware of `.vue` types.
-
-If the standalone TypeScript plugin doesn't feel fast enough to you, Volar has also implemented a [Take Over Mode](https://github.com/johnsoncodehk/volar/discussions/471#discussioncomment-1361669) that is more performant. You can enable it by the following steps:
-
-1. Disable the built-in TypeScript Extension
-    1) Run `Extensions: Show Built-in Extensions` from VSCode's command palette
-    2) Find `TypeScript and JavaScript Language Features`, right click and select `Disable (Workspace)`
-2. Reload the VSCode window by running `Developer: Reload Window` from the command palette.
-
-## Customize configuration
-
-See [Vite Configuration Reference](https://vitejs.dev/config/).
-
-## Project Setup
-
-```sh
-pnpm install
-```
-
-### Compile and Hot-Reload for Development
-
-```sh
-pnpm dev
-```
-
-### Type-Check, Compile and Minify for Production
-
-```sh
-pnpm build
-```
+1. 腾讯云阿里云的DDNS
