@@ -2,16 +2,16 @@
     <div class="ddns">
         <el-dialog v-model="isConfigDialog" title="新建配置">
             <el-form-item label="配置名">
-                <el-input placeholder="请输入配置名" clearable v-model="Config.ID" />
+                <el-input placeholder="请输入配置名" clearable v-model="config.ID" />
             </el-form-item>
             <el-form-item label="域名:">
-                <el-input placeholder="请输入主域名" clearable v-model="Config.DOMAIN" />
+                <el-input placeholder="请输入主域名" clearable v-model="config.DOMAIN" />
             </el-form-item>
             <el-form-item label="记录类型">
-                <el-input placeholder="请输入记录类型" clearable v-model="Config.RECORD_TYPE" />
+                <el-input placeholder="请输入记录类型" clearable v-model="config.RECORD_TYPE" />
             </el-form-item>
             <el-form-item label="服务商:">
-                <el-select v-model="Config.DNS" placeholder="请选择你的域名服务商" clearable @change="changeService" @clear="clear">
+                <el-select v-model="config.DNS" placeholder="请选择你的域名服务商" clearable @change="changeService" @clear="clear">
                     <el-option v-for="(item, index) in mockDns" :label="item.SERVICE_NAME" :value="index" />
                 </el-select>
             </el-form-item>
@@ -19,14 +19,14 @@
             <div v-if="isKeyShow">
                 <div v-for="(item, index) in mockDns[service].KEY">
                     <el-form-item :label="item">
-                        <el-input :placeholder="`请输入${item}`" clearable v-model="Config[item]" />
+                        <el-input :placeholder="`请输入${item}`" clearable v-model="config[item]" />
                     </el-form-item>
 
                 </div>
                 <el-link type="primary" :href="helpurl" target="_blank">点我创建密钥</el-link>
             </div>
             <div class="dialog-footer">
-                <el-button @click="test" style="margin-left: auto;">提交</el-button>
+                <el-button @click="sendConfig" style="margin-left: auto;">提交</el-button>
             </div>
 
         </el-dialog>
@@ -62,7 +62,7 @@
 
 <script setup lang='ts'>
 import { InfoFilled } from '@element-plus/icons-vue'
-import { ref, reactive, onMounted } from 'vue'
+import { ref, reactive, onMounted, type Ref } from 'vue'
 import { GetServiceConfig, POSTConfig, GetConfig, DELETEConfig } from '@/request/api'
 import { ElMessage } from 'element-plus';
 //获取密钥连接
@@ -104,7 +104,7 @@ const isKeyShow = ref(false)
 const openNewConfig = () => {
     isConfigDialog.value = true
 }
-const Config = reactive({
+const config:Ref = ref({
 })
 
 //清空 配置项
@@ -114,17 +114,12 @@ const clear = () => {
 
 
 
-
-const newConfig = () => {
-
-}
-
 //切换服务商
 const changeService = (val: number) => {
     //除了domain,dns其他都清空
-    for (const key in Config) {
+    for (const key in config.value) {
         if (key != 'DOMAIN' && key != 'DNS' && key != 'ID' && key != 'RECORD_TYPE') {
-            delete Config[key]
+            delete config.value[key]
         }
     }
 
@@ -139,28 +134,28 @@ const changeService = (val: number) => {
 }
 
 //提交
-const test = () => {
+const sendConfig = () => {
     const reg = /^(?=^.{3,255}$)[a-zA-Z0-9][-a-zA-Z0-9]{0,62}(\.[a-zA-Z0-9][-a-zA-Z0-9]{0,62})+$/;
-    if (!reg.test(Config.DOMAIN)) {
+    if (!reg.test(config.value.DOMAIN)) {
         ElMessage.error('请输入正确的域名')
         return false
     }
     //将服务商名字赋值
-    Config.DNS = mockDns[service.value].SERVICE_NAME
+    config.value.DNS = mockDns[service.value].SERVICE_NAME
     //提起子域 和主域名
-    const subdomains = Config.DOMAIN.split(".");
+    const subdomains = config.value.DOMAIN.split(".");
     const subdomain = subdomains.length > 2 ? subdomains[0] : "@";
 
-    Config.SUB_DOMAIN = subdomain
+    config.value.SUB_DOMAIN = subdomain
 
-    Config.DOMAIN = subdomains.slice(-2).join(".");
+    config.value.DOMAIN = subdomains.slice(-2).join(".");
 
 
     //添加创建时间
-    Config.CREATED_TIME = new Date().toLocaleString()
+    config.value.CREATED_TIME = new Date().toLocaleString()
     //添加状态
-    Config.STATUS = ''
-    POSTConfig(Config).then(res => {
+    config.value.STATUS = ''
+    POSTConfig(config.value).then(res => {
         console.log(res)
     })
     //提交成功后重新获取数据
@@ -172,6 +167,8 @@ const test = () => {
     }).catch(err => {
         ElMessage.error(err)
     })
+    console.log(config);
+    
     //关闭Dialog
     isConfigDialog.value = false
 }

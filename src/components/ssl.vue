@@ -5,6 +5,16 @@
             <el-button type="primary" style="margin-left: auto;margin-right: 10px;" @click="openNewConfig">新建配置</el-button>
         </div>
         <el-dialog v-model="isConfigDialog" title="新建配置">
+            <el-form-item label="配置名">
+                <el-input placeholder="请输入配置名" clearable  />
+            </el-form-item>
+            <el-form-item label="域名">
+                <el-input placeholder="请输入需要申请的域名 例：xx.com *.xx.com" clearable v-model="config.ID"  />
+            </el-form-item>
+            <div class="dialog-footer">
+                <el-button @click="aa" style="margin-left: auto;">提交</el-button>
+                
+            </div>
 
 
         </el-dialog>
@@ -40,10 +50,19 @@
 <script setup lang='ts'>
 import { ref, reactive } from 'vue'
 //新建配置Dialog 默认隐藏
-const isConfigDialog = ref(false)x
+const isConfigDialog = ref(false)
 //打开dialog
 const openNewConfig = () => {
     isConfigDialog.value = true
+}
+
+//SSL配置
+const config = ref({
+})
+
+const aa = ()=>{
+    console.log(config.value);
+    
 }
 </script>
     
@@ -65,5 +84,8 @@ const openNewConfig = () => {
     width: 100%;
     border: 1px solid #ccc;
 }
-
+.dialog-footer {
+    display: flex;
+    margin-top: 10px;
+}
 </style>
